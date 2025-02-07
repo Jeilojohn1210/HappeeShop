@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HappeeShop</title>
+</head>
+<link rel="stylesheet" href="HappeeShop.css">
+
+<body>
+    <header>HappeeShop</header>
+    <div class="container">
+        <img src="happeepics/happeeelogo.jpg" alt="HappeeShop" class="logo">
+        <div class="auth-form" id="login-form">
+            <h3>Login your account</h3>
+            <input type="text" id="login-username" placeholder="Username">
+            <input type="password" id="login-password" placeholder="Password">
+            <button onclick="login()">Login</button>
+            <p>Don't have an account? <a href="#" onclick="showSignup()" style="color: rgb(188, 188, 188);">Sign up</a></p>
+        </div>
+        <div class="auth-form" id="signup-form" style="display:none;">
+            <h2>Sign Up</h2>
+            <input type="text" id="signup-username" placeholder="Username">
+            <input type="password" id="signup-password" placeholder="Password">
+            <button onclick="signup()">Sign Up</button>
+            <p>Already have an account? <a href="#" onclick="showLogin()" style="color: rgb(188, 188, 188);">Login</a></p>
+        </div>
+    </div>
+    <script>
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        function showSignup() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'block';
+        }
+        function showLogin() {
+            document.getElementById('signup-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        }
+        function signup() {
+    let username = document.getElementById('signup-username').value;
+    let password = document.getElementById('signup-password').value;
+
+    // Check if username and password fields are empty
+    if (!username || !password) {
+        alert("Please enter both fields!");
+        return;
+    }
+
+    if (users.some(user => user.username === username)) {
+        alert("Username already taken!");
+        return;
+    }
+
+    users.push({ username, password });
+    localStorage.setItem('users', JSON.stringify(users));
+    alert("Sign up successful!");
+    showLogin();
+}
+        function login() {
+            let username = document.getElementById('login-username').value;
+            let password = document.getElementById('login-password').value;
+            if (!username || !password) {
+                alert("Please enter both fields!");
+                return;
+            }
+            let user = users.find(user => user.username === username && user.password === password);
+            if (user) {
+                window.location.href = "happeehome.html";
+            } else {
+                alert("Invalid Username or Password!");
+            }
+        }
+    </script>
+    <footer>
+        <p>&copy; 2025 HappeeShop. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

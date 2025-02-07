@@ -1,0 +1,83 @@
+*
+body {
+    font-family: Arial, sans-serif;
+    background-color: #949494;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    animation: fadeIn 1s ease-in;
+}
+header {
+    background-color: #1f1f1f;
+    color: rgb(188, 188, 188);;
+    padding: 15px;
+    font-size: 24px;
+    font-weight: bold;
+}
+.logo {
+    width: 200px;
+    margin: 20px auto;
+    display: block;
+    animation: slideIn 1s ease-in-out;
+}
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+.auth-form {
+    background-color: #1f1f1f;
+    padding: 20px;
+    margin: auto;
+    width: 320px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(197, 197, 197, 0.5);
+    animation: fadeInUp 0.8s ease-in;
+}
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid rgb(188, 188, 188);;
+    border-radius: 5px;
+    background: #222;
+    color: white;
+}
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(188, 188, 188);;
+    border: none;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+button:hover {
+    transform: scale(1.05);
+}
+footer {
+    background-color: #1f1f1f;
+    color: rgb(188, 188, 188);;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+

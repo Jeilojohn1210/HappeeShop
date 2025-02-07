@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HappeeShop</title>
+    <link rel="stylesheet" href="happeehome.css">
+</head>
+<body>
+
+<header>
+    <h1>HappeeShop</h1>
+    <h3>Your SkinCare Partner</h3>
+</header>
+
+<nav>
+    <ul>
+        <li><a onclick="goToAddress()">Your Address</a></li>
+        <li><a onclick="goToCart()">Cart</a></li>
+        <li><a onclick="goToReceive()">To Receive</a></li>
+        <li><a href="HappeeShop.html">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <!-- Gallery -->
+    <div id="gallery">
+        <h2>Cetaphil</h2>
+    <div id="gallery1" class="gallery-container"></div>
+
+    <h2>POND'S</h2>
+    <div id="gallery2" class="gallery-container"></div>
+
+    <h2>SkinEVER</h2>
+    <div id="gallery3" class="gallery-container"></div>
+    </div>
+
+    <div id="address" style="display:none;">
+        <h2>Your Address</h2>
+        <form id="address-form">
+            <input type="text" id="full-name" placeholder="Full Name" required><br>
+            <input type="text" id="street" placeholder="Street Address" required><br>
+            <input type="text" id="city" placeholder="City" required><br>
+            <input type="text" id="zip" placeholder="Zip Code" required><br>
+            <button type="submit">Save Address</button>
+        </form>
+        <p id="saved-address"></p>
+        <button onclick="showGallery()">Back to Shop</button>
+    </div>
+
+    <div id="cart" style="display:none;", style="font-size: larger;">
+        <h2>Your Cart</h2>
+        <ul id="cart-items"></ul>
+        <p>Total Price: $<span id="total-price">0</span></p>
+        <button onclick="placeOrder()">Place Order</button>
+        <button onclick="showGallery()">Back to Shop</button>
+    </div>
+
+    <div id="receive" style="display:none;">
+        <h2>To Receive</h2>
+        <div id="receive-items"></div>
+        <button onclick="showGallery()">Back to Shop</button>
+    </div>
+</div>
+
+<script>
+    window.addEventListener("scroll", function () {
+        let scrollPos = window.scrollY;
+        let lightGray = 211 - scrollPos / 10; /* Light gray (d3d3d3 = rgb(211,211,211)) */
+        let darkGray = 169 - scrollPos / 15;  /* Dark gray (a9a9a9 = rgb(169,169,169)) */
+
+        document.body.style.background = `linear-gradient(180deg, rgb(${lightGray},${lightGray},${lightGray}), rgb(${darkGray},${darkGray},${darkGray}))`;
+    });
+</script>
+
+
+<script>
+    let address = JSON.parse(localStorage.getItem('address')) || {};
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let receive = JSON.parse(localStorage.getItem('receive')) || [];
+
+    function goToAddress() {
+        hideAllSections();
+        document.getElementById('address').style.display = 'block';
+        displayAddress();
+    }
+
+    function goToCart() {
+        hideAllSections();
+        document.getElementById('cart').style.display = 'block';
+        displayCart();
+    }
+
+    function goToReceive() {
+        hideAllSections();
+        document.getElementById('receive').style.display = 'block';
+        displayReceive();
+    }
+
+    function showGallery() {
+        hideAllSections();
+        document.getElementById('gallery').style.display = 'block';
+    }
+
+    function hideAllSections() {
+        document.getElementById('gallery').style.display = 'none';
+        document.getElementById('cart').style.display = 'none';
+        document.getElementById('address').style.display = 'none';
+        document.getElementById('receive').style.display = 'none';
+    }
+
+    function addToCart(name, price) {
+        cart.push({ name, price });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(name + " added to cart!");
+    }
+
+    function displayCart() {
+        let cartList = document.getElementById('cart-items');
+        cartList.innerHTML = '';
+        let total = 0;
+        cart.forEach((item, index) => {
+            let li = document.createElement('li');
+            li.innerHTML = `${item.name} - $${item.price} <button onclick="removeFromCart(${index})">Remove</button>`;
+            cartList.appendChild(li);
+            total += item.price;
+        });
+        document.getElementById('total-price').textContent = total;
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCart();
+    }
+
+    function placeOrder() {
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+        receive.push(...cart);
+        localStorage.setItem('receive', JSON.stringify(receive));
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCart();
+        alert("Order placed successfully!");
+    }
+
+    function displayReceive() {
+        let receiveList = document.getElementById('receive-items');
+        receiveList.innerHTML = '';
+        
+        let batches = groupItemsByBatch(receive);
+        
+        batches.forEach((batch, batchIndex) => {
+            let batchDiv = document.createElement('div');
+            batchDiv.classList.add('batch');
+            batchDiv.innerHTML = `<div class="batch-header">Batch ${batchIndex + 1} Order</div>`;
+            
+            let batchItemsList = document.createElement('ul');
+            batchItemsList.classList.add('batch-items');
+            let batchTotal = 0;
+
+            batch.forEach(item => {
+                let li = document.createElement('li');
+                li.classList.add('batch-item');
+                let itemTotal = item.price * item.quantity;
+                li.innerHTML = `${item.name} (${item.quantity}x) = $${itemTotal}`;
+                batchItemsList.appendChild(li);
+                batchTotal += itemTotal;
+            });
+
+            let totalPriceDiv = document.createElement('div');
+            totalPriceDiv.classList.add('batch-total');
+            totalPriceDiv.textContent = `Total Price: $${batchTotal}`;
+
+            let buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('button-container');
+            
+            let cancelButton = document.createElement('button');
+            cancelButton.textContent = 'Cancel Order';
+            cancelButton.onclick = () => cancelOrder(batchIndex);
+
+            let orderReceiveButton = document.createElement('button');
+            orderReceiveButton.textContent = 'Order Received';
+            orderReceiveButton.onclick = () => orderReceived(batchIndex);
+
+            buttonContainer.appendChild(cancelButton);
+            buttonContainer.appendChild(orderReceiveButton);
+
+            batchDiv.appendChild(batchItemsList);
+            batchDiv.appendChild(totalPriceDiv);
+            batchDiv.appendChild(buttonContainer);
+            
+            if (Object.keys(address).length > 0) {
+                let addressDiv = document.createElement('div');
+                addressDiv.classList.add('batch-address');
+                addressDiv.textContent = `The order will be delivered to this address: ${address.fullName}, ${address.street}, ${address.city}, ${address.zip}`;
+                batchDiv.appendChild(addressDiv);
+            }
+
+            receiveList.appendChild(batchDiv);
+        });
+    }
+
+    function groupItemsByBatch(items) {
+    let batches = [];
+    let batch = [];
+
+    items.forEach(item => {
+        let existingItem = batch.find(i => i.name === item.name);
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            batch.push({ ...item, quantity: 1 });
+        }
+
+        if (batch.length === 3) {  
+            batches.push([...batch]); // Push a copy of the batch
+            batch = [];
+        }
+    });
+
+    if (batch.length > 0) batches.push(batch);
+
+    return batches;
+}
+
+function cancelOrder(batchIndex) {
+    let batches = groupItemsByBatch(receive);
+
+    if (batchIndex < 0 || batchIndex >= batches.length) return;
+
+    // Remove the batch completely
+    batches.splice(batchIndex, 1);
+
+    // Flatten the batch list back into receive
+    receive = batches.flat();
+
+    localStorage.setItem('receive', JSON.stringify(receive));
+
+    displayReceive();
+    alert('Batch order canceled!');
+}
+
+function orderReceived(batchIndex) {
+    let batches = groupItemsByBatch(receive);
+
+    if (batchIndex < 0 || batchIndex >= batches.length) return;
+
+    // Remove the batch that was received
+    batches.splice(batchIndex, 1);
+
+    // Flatten the batch list back into receive
+    receive = batches.flat();
+
+    localStorage.setItem('receive', JSON.stringify(receive));
+
+    displayReceive();
+    alert('Batch order received successfully!');
+}
+
+
+    function displayAddress() {
+        let savedAddress = document.getElementById('saved-address');
+        if (Object.keys(address).length > 0) {
+            savedAddress.textContent = `Saved Address: ${address.fullName}, ${address.street}, ${address.city}, ${address.zip}`;
+        } else {
+            savedAddress.textContent = "No address saved yet.";
+        }
+    }
+
+    document.getElementById('address-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        address = {
+            fullName: document.getElementById('full-name').value,
+            street: document.getElementById('street').value,
+            city: document.getElementById('city').value,
+            zip: document.getElementById('zip').value
+        };
+        localStorage.setItem('address', JSON.stringify(address));
+        displayAddress();
+        alert("Address saved!");
+    });
+
+    const products = [ 
+            { name: "Cetaphil Gentle Cleansing Bar", img: "happeepics/Cetaphil Gentle Cleansing Bar (127g).jpeg", price: 18, link: "product1.html" },
+            { name: "Cetaphil Gentle Skin Cleanser", img: "happeepics/Cetaphil Gentle Skin Cleanser 500mL.jpeg", price: 16, link: "product2.html" },
+            { name: "Cetaphil Moisturising Cream for Face & Body", img: "happeepics/Cetaphil Moisturising Cream for Face & Body.jpeg", price: 21, link: "product3.html" },
+            { name: "Cetaphil Baby Advanced Protection Cream", img: "happeepics/Cetaphil Baby Advanced Protection Cream.jpg", price: 20, link: "product4.html" },
+            { name: "Cetaphil Hydrating Lotion", img: "happeepics/Cetaphil Hydrating Lotion.jpg", price: 23, link: "product5.html" }
+        ];
+
+        const products1 = [
+            { name: "PONDS Acne Control Facial Wash 100g", img: "happeepics/PONDS Acne Control Facial Wash 100g.jpg", price: 12, link: "product6.html" },
+            { name: "PONDS Bright Miracle Facial Foam", img: "happeepics/PONDS Bright Miracle Facial Foam.jpg", price: 15, link: "product7.html" },
+            { name: "PONDS Dry Skin Cream", img: "happeepics/PONDS Dry Skin Cream.jpg", price: 20, link: "product8.html" },
+            { name: "PONDS Vitamin  C+E+A Range", img: "happeepics/PONDS Vitamin  C+E+A Range.jpg", price: 18, link: "product9.html" },
+            { name: "PONDS White Beauty Super Cream", img: "happeepics/PONDS White Beauty Super Cream.jpg", price: 18, link: "product10.html" },
+        ];
+
+        const products2 = [
+            { name: "SKINEVER Daily Protect set", img: "happeepics/SKINEVER Daily Protect set.jpg", price: 29, link: "product11.html" },
+            { name: "SKINEVER Salicylc Anti Acne Serum", img: "happeepics/SKINEVER Salicylc Anti Acne Serum.jpg", price: 18, link: "product12.html" },
+            { name: "SKINEVER Salicylic Acid Acne Masque", img: "happeepics/SKINEVER Salicylic Acid Acne Masque.jpg", price: 25, link: "product13.html" },
+            { name: "SKINEVER Salicylic Acid Deep Pore Cleansing Mud", img: "happeepics/SKINEVER Salicylic Acid Deep Pore Cleansing Mud.jpg", price: 39, link: "product14.html" },
+            { name: "SKINEVER Water Light Serum Sunscreen", img: "happeepics/SKINEVER Water Light Serum Sunscreen.jpg", price: 22, link: "product15.html" },
+        ];
+
+        function renderProducts(products, containerId) {
+            const gallery = document.getElementById(containerId);
+            gallery.innerHTML = ""; // Clear previous content if needed
+            products.forEach(product => {
+                let item = document.createElement("div");
+                item.classList.add("gallery-item");
+                item.innerHTML = `
+                    <img src="${product.img}" alt="${product.name}">
+                    <p>${product.name}</p>
+                    <p>Price: $${product.price}</p>
+                    <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart 🛒</button>
+                `;
+                gallery.appendChild(item);
+            });
+        }
+
+        // Render all galleries
+        renderProducts(products, "gallery1");
+        renderProducts(products1, "gallery2");
+        renderProducts(products2, "gallery3");
+
+</script>
+
+<footer>
+    <p>&copy; 2025 HappeeShop All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
