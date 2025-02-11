@@ -14,23 +14,7 @@
     <h3 style="font-family: 'Segoe UI'; ">Your SkinCare Partner</h3>
 </header>
 
-    <div class="popup" id="popup">
-    <div class="popup-content">
-        <button class="close-btn" onclick="hidePopup()">X</button>
-        <img src="happeepics/HappeeOflogo.jpg" alt="Popup Image">
-    </div>
-</div>
-
-<script>
-    function showPopup() {
-        document.getElementById("popup").style.display = "flex";
-    }
-
-    function hidePopup() {
-        document.getElementById("popup").style.display = "none";
-    }
-</script>
-
+    
 <nav>
     <ul>
         <li><a onclick="goToAddress()">Your Address</a></li>
@@ -81,6 +65,24 @@
     </div>
 
 </div>
+
+    <div class="popup" id="popup">
+    <div class="popup-content">
+        <button class="close-btn" onclick="hidePopup()">X</button>
+        <img src="happeepics/HappeeOflogo.jpg" alt="Popup Image">
+    </div>
+</div>
+
+<script>
+    function showPopup() {
+        document.getElementById("popup").style.display = "flex";
+    }
+
+    function hidePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+</script>
+
 
 <script>
     window.addEventListener("scroll", function () {
