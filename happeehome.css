@@ -21,6 +21,7 @@ header {
 header img {
     width: 50px; /* Default size */
     height: auto; /* Maintain aspect ratio */
+    max-width: 600px; /* Limit size on larger screens */
     max-width: 100%; /* Prevent overflow */
 }
 
@@ -193,6 +194,13 @@ button:hover {
 
     .popup img {
         width: 80%;
+    }
+}
+
+/* Adjust for larger screens */
+@media screen and (min-width: 1024px) {
+    .popup img {
+        max-width: 500px; /* Reduce size for laptop screens */
     }
 }
 
