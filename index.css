@@ -22,7 +22,8 @@ header {
     animation: slideIn 1s ease-in-out;
 }
 .container {
-    width: 60%;
+    width: 90%;
+    max-width: 600px; /* Ensures it doesn't get too wide on large screens */
     margin: auto;
     padding: 20px;
 }
