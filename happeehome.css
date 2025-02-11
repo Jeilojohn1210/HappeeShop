@@ -19,9 +19,8 @@ header {
     text-align: center;
 }
 header img {
-    width: 200px; /* Default size */
+    width: 150px; /* Default size */
     height: auto; /* Maintain aspect ratio */
-    max-width: 600px; /* Limit size on larger screens */
     max-width: 100%; /* Prevent overflow */
 }
 
@@ -41,10 +40,12 @@ header img {
     position: relative;
 }
 .popup img {
-    max-width: 90%; /* Make it responsive */
-    height: auto;
+    width: 90%; /* Default size for responsiveness */
+    max-width: 600px; /* Limit size on larger screens */
+    height: auto; 
     border-radius: 10px;
 }
+
 .close-btn {
     position: absolute;
     top: -10px;
@@ -200,7 +201,7 @@ button:hover {
 /* Adjust for larger screens */
 @media screen and (min-width: 1024px) {
     .popup img {
-        max-width: 300px; /* Reduce size for laptop screens */
+        max-width: 500px; /* Reduce size for laptop screens */
     }
 }
 
@@ -229,5 +230,6 @@ button:hover {
         margin: 5px 0;
     }
 }
+
 
 
