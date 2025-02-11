@@ -19,7 +19,7 @@ header {
     text-align: center;
 }
 header img {
-    width: 100px; /* Default size */
+    width: 200px; /* Default size */
     height: auto; /* Maintain aspect ratio */
     max-width: 600px; /* Limit size on larger screens */
     max-width: 100%; /* Prevent overflow */
