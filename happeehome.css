@@ -216,10 +216,14 @@ button:hover {
     .gallery-container {
         display: grid;
         grid-template-columns: repeat(2, 1fr); /* Two columns */
-        gap: 10px;
+        gap: 10px; /* Add gap between items */
+        justify-content: center;
     }
+
     .gallery-item {
-        width: 100%; /* Ensure items fit within the grid */
+        width: 90%; /* Adjust width for better spacing */
+        max-width: 150px; /* Limit size */
+        margin: auto; /* Center items */
     }
 }
     
