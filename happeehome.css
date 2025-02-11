@@ -17,7 +17,8 @@ header {
     color: white;
     padding: 10px 0;
     text-align: center;
-}header img {
+}
+header img {
     width: 150px; /* Adjust width */
     height: auto; /* Maintain aspect ratio */
 }
@@ -133,7 +134,7 @@ h2 {
 }
 
 /* Image Animation */
-img {
+body img {
     width: 200px;
     height: auto;
     border-radius: 5px;
