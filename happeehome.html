@@ -9,8 +9,9 @@
 <body>
 
 <header>
+    <img src="happeepics/HappeeNoBackG1.png" alt="HappeeShop" class="logo" onclick="showPopup()">
     <h1>HappeeShop</h1>
-    <h3>Your SkinCare Partner</h3>
+    <h3 style="font-family: 'Segoe UI'; ">Your SkinCare Partner</h3>
 </header>
 
 <nav>
@@ -61,6 +62,23 @@
         <div id="receive-items"></div>
         <button onclick="showGallery()">Back to Shop</button>
     </div>
+
+    <div class="popup" id="popup">
+    <div class="popup-content">
+        <button class="close-btn" onclick="hidePopup()">X</button>
+        <img src="happeepics/HappeeOflogo.jpg" alt="Popup Image">
+    </div>
+</div>
+
+<script>
+    function showPopup() {
+        document.getElementById("popup").style.display = "flex";
+    }
+
+    function hidePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+</script>
 </div>
 
 <script>
