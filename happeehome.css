@@ -19,8 +19,9 @@ header {
     text-align: center;
 }
 header img {
-    max-width: 100%; /* Ensures it doesn't overflow */
-    height: auto;
+    width: 100px; /* Default size */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Prevent overflow */
 }
 
 /* Popup */
@@ -192,6 +193,13 @@ button:hover {
 
     .popup img {
         width: 80%;
+    }
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 600px) {
+    header img {
+        width: 80px; /* Reduce size on small screens */
     }
 }
 
